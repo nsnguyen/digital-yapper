@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    ports:
+      - "8080:8000"
+    environment:
+      - ENVIRONMENT=production
+      - PORT=8000
+    
+  # For development, we can still keep separate services
+  backend-dev:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+      target: backend-builder
+    volumes:
+      - ./backend:/app/backend
+    ports:
+      - "8000:8000"
+    environment:
+      - ENVIRONMENT=development
+      - PORT=8000
+    command: poetry run uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    profiles: ["dev"]
+
+  frontend-dev:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+      target: frontend-builder
+    volumes:
+      - ./frontend:/app/frontend
+      - /app/frontend/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=http://localhost:8000
+    command: npm start
+    depends_on:
+      - backend-dev
+    profiles: ["dev"]
