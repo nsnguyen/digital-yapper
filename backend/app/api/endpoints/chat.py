@@ -4,13 +4,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.database.connection import get_db
 from app.database.models import Conversation, Message
 from app.models.chat import ChatMessage, ChatResponse
-from app.services.chat_service import ChatService
+from app.services.chat_service import NursingChatService
 import json
 import uuid
 from sqlalchemy import select
 
 router = APIRouter()
-chat_service = ChatService()
+chat_service = NursingChatService()
 
 @router.post("/chat")
 async def chat(message: ChatMessage, db: AsyncSession = Depends(get_db)):
