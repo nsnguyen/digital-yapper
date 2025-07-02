@@ -12,7 +12,7 @@ from sqlalchemy import select
 router = APIRouter()
 chat_service = NursingChatService()
 
-@router.post("/chat")
+@router.post("/")
 async def chat(message: ChatMessage, db: AsyncSession = Depends(get_db)):
     # TODO: Get user_id from Microsoft auth token
     user_id = "anonymous"  # Placeholder
@@ -48,7 +48,7 @@ async def chat(message: ChatMessage, db: AsyncSession = Depends(get_db)):
     
     return ChatResponse(response=response, conversation_id=conversation_id)
 
-@router.post("/chat/stream")
+@router.post("/stream")
 async def chat_stream(message: ChatMessage, db: AsyncSession = Depends(get_db)):
     # TODO: Get user_id from Microsoft auth token
     user_id = "anonymous"  # Placeholder

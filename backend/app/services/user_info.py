@@ -54,14 +54,17 @@ def extract_user_info(message: str, current_info: UserInfo) -> UserInfo:
     message_upper = message.upper()
     new_info = UserInfo(unit=current_info.unit, role=current_info.role)
     
-    # Extract role
-    roles = ['NURSE', 'DOCTOR', 'PHYSICIAN', 'TECH', 'TECHNICIAN', 'ASSISTANT']
+    # Extract role - look for common nursing roles
+    roles = ['NURSE', 'DOCTOR', 'PHYSICIAN', 'TECH', 'TECHNICIAN', 'ASSISTANT', 'RN', 'LPN', 'CNA']
     for role in roles:
         if role in message_upper:
-            new_info.role = role
+            if role in ['RN', 'LPN', 'CNA']:
+                new_info.role = 'NURSE'
+            else:
+                new_info.role = role
             break
     
-    # Extract unit
+    # Extract unit - check if any unit keywords are mentioned
     found_unit = HospitalUnits.find_unit(message)
     if found_unit:
         new_info.unit = found_unit

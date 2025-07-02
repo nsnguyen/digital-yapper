@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LandingPage from './components/LandingPage';
 import TestEndpoint from './pages/TestEndpoint';
 import ChatPage from './pages/ChatPage';
+import ChatHistory from './pages/ChatHistory';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
               <nav className="flex space-x-4">
                 <a href="/" className="text-blue-600 hover:text-blue-800">Home</a>
                 <a href="/chat" className="text-blue-600 hover:text-blue-800">Chat</a>
+                <a href="/history" className="text-blue-600 hover:text-blue-800">History</a>
                 <a href="/test_endpoint" className="text-blue-600 hover:text-blue-800">Test API</a>
               </nav>
             </div>
@@ -26,6 +28,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<LandingPage />} />
                 <Route path="/chat" element={<ChatPage />} />
+                <Route path="/history" element={<ChatHistory />} />
                 <Route path="/test_endpoint" element={<TestEndpoint />} />
               </Routes>
             </div>

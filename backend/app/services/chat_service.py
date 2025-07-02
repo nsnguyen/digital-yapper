@@ -25,6 +25,8 @@ class NursingChatService:
             temperature=0.1
         )
         self.graph = self._create_graph()
+        # Store user info per conversation
+        self.conversation_user_info = {}
     
     def _create_graph(self):
         workflow = StateGraph(GraphState)
@@ -57,8 +59,22 @@ class NursingChatService:
     
     def _extract_user_info_node(self, state: GraphState) -> Dict:
         """Extract and update user information from current message"""
-        current_info = state.get("user_info", UserInfo())
-        updated_info = extract_user_info(state["current_message"], current_info)
+        # Get existing user info from conversation history
+        messages = state.get("messages", [])
+        conversation_key = "default"  # In production, use actual conversation_id
+        
+        # Get or create user info for this conversation
+        if conversation_key not in self.conversation_user_info:
+            self.conversation_user_info[conversation_key] = UserInfo()
+        
+        current_info = self.conversation_user_info[conversation_key]
+        
+        # Extract info from ALL previous messages, not just current
+        combined_text = " ".join([msg["content"] for msg in messages if msg["role"] == "user"])
+        updated_info = extract_user_info(combined_text, current_info)
+        
+        # Store updated info
+        self.conversation_user_info[conversation_key] = updated_info
         
         return {"user_info": updated_info}
     

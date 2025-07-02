@@ -68,7 +68,7 @@ export const getServerInfo = async () => {
  */
 export const sendChatMessage = async (content, conversationId = null) => {
   try {
-    const response = await api.post('/api/chat/chat', {
+    const response = await api.post('/api/chat/', {
       content,
       conversation_id: conversationId
     });
