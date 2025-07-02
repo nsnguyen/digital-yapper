@@ -32,13 +32,17 @@ class ChatService:
         return workflow.compile()
     
     async def chat_stream(self, message: str):
-        messages = [HumanMessage(content=message)]
+        # Use LangGraph for streaming
+        state = {"messages": [{"role": "user", "content": message}], "response": ""}
         
+        # For streaming, we still need to call LLM directly since LangGraph doesn't stream yet
+        messages = [HumanMessage(content=message)]
         async for chunk in self.llm.astream(messages):
             if hasattr(chunk, 'content') and chunk.content:
                 yield chunk.content
     
     async def chat(self, message: str) -> str:
-        messages = [HumanMessage(content=message)]
-        response = await self.llm.ainvoke(messages)
-        return response.content
+        # Use LangGraph for non-streaming
+        state = {"messages": [{"role": "user", "content": message}], "response": ""}
+        result = await self.graph.ainvoke(state)
+        return result["response"]

@@ -14,6 +14,9 @@ class Settings(BaseSettings):
     # Database Configuration
     DATABASE_URL: str = "sqlite+aiosqlite:///./conversations.db"
     
+    # Python Configuration
+    PYTHONDONTWRITEBYTECODE: str = "1"
+    
     # TODO: Microsoft Auth Configuration
     # AZURE_CLIENT_ID: str = ""
     # AZURE_CLIENT_SECRET: str = ""
