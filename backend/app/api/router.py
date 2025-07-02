@@ -1,9 +1,9 @@
 from fastapi import APIRouter
 
-from app.api.endpoints import data, chat
+from app.api.endpoints import chat
 
 api_router = APIRouter()
-api_router.include_router(data.router, prefix="/data", tags=["data"])
+# api_router.include_router(data.router, prefix="/data", tags=["data"])
 api_router.include_router(chat.router, prefix="/chat", tags=["chat"])
 
 # Add a status endpoint

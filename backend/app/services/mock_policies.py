@@ -139,13 +139,12 @@ def get_mock_policies(unit: str, query: str) -> list[dict[str, str]]:
                 "unit_specific": f"This policy is specific to {unit} operations."
             })
     
-    # If no specific match, return a general policy
-    if not relevant_policies and policies:
-        first_policy = list(policies.values())[0]
-        relevant_policies.append({
-            "title": f"General {unit} Policy",
-            "content": first_policy["content"],
-            "unit_specific": f"This is a general policy for {unit}. Please be more specific for targeted policies."
-        })
+    # If no specific match, return empty list (don't make up policies)
+    if not relevant_policies:
+        return [{
+            "title": f"No Policy Found for {unit}",
+            "content": f"I don't have information about '{query}' for {unit}. The available policies I have are: {', '.join(policies.keys())}.",
+            "unit_specific": f"Please ask about available policies for {unit}."
+        }]
     
     return relevant_policies

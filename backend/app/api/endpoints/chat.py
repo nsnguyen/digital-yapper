@@ -12,8 +12,10 @@ from sqlalchemy import select
 router = APIRouter()
 chat_service = NursingChatService()
 
+
 @router.post("/")
 async def chat(message: ChatMessage, db: AsyncSession = Depends(get_db)):
+    print(f"Received chat message: {message.content}")
     # TODO: Get user_id from Microsoft auth token
     user_id = "anonymous"  # Placeholder
     
@@ -50,6 +52,8 @@ async def chat(message: ChatMessage, db: AsyncSession = Depends(get_db)):
 
 @router.post("/stream")
 async def chat_stream(message: ChatMessage, db: AsyncSession = Depends(get_db)):
+    print(f"Received chat message for streaming: {message}")
+    
     # TODO: Get user_id from Microsoft auth token
     user_id = "anonymous"  # Placeholder
     

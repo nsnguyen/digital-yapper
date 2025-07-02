@@ -17,12 +17,12 @@ const LandingPage = () => {
           <li>API integration between frontend and backend</li>
         </ul>
       </div>
-      <Link 
+      {/* <Link 
         to="/test_endpoint" 
         className="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
       >
         Go to Test Form
-      </Link>
+      </Link> */}
     </div>
   );
 };

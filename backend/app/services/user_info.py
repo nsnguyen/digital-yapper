@@ -72,5 +72,5 @@ def extract_user_info(message: str, current_info: UserInfo) -> UserInfo:
         print(f"DEBUG: Mapped unit '{message}' -> '{found_unit}'")
     else:
         print(f"DEBUG: No unit found in message: '{message}'")
-    
+
     return new_info

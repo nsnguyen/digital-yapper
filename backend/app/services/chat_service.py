@@ -241,13 +241,55 @@ You are a helpful nursing assistant. Answer the user's question based on the pro
         # Run graph up to final response
         result = await self.graph.ainvoke(initial_state)
         
-        # If it went to clarification, just return that
-        if "final_response" in result and result["final_response"]:
-            for char in result["final_response"]:
-                yield char
+        # Check which path the graph took
+        if result["route_decision"] == "get_clarification":
+            # For clarification responses, stream from OpenAI directly
+            user_info = result["user_info"]
+            message_text = message
+            
+            # Create clarification prompt
+            if not user_info.unit and not user_info.role:
+                clarification_prompt = f"""
+User message: "{message_text}"
+
+You are helping a nurse clarify their request. They haven't provided their unit or role yet.
+
+Respond with:
+1. Brief acknowledgment of their message
+2. Ask them to provide their unit and role
+3. Be friendly and helpful
+
+Example: "Hi! I'd be happy to help you with nursing policies. To provide the most accurate information, could you please tell me your role (e.g., Nurse, Tech) and which unit you work in (e.g., ICU, ED)?"
+"""
+            elif not user_info.unit:
+                clarification_prompt = f"""
+User message: "{message_text}"
+User role: {user_info.role}
+
+The user has provided their role but not their unit. Ask them for their specific unit.
+"""
+            elif not user_info.role:
+                clarification_prompt = f"""
+User message: "{message_text}"
+User unit: {user_info.unit}
+
+The user has provided their unit but not their role. Ask them for their specific role.
+"""
+            else:
+                clarification_prompt = f"""
+User message: "{message_text}"
+User info: {user_info.role} in {user_info.unit}
+
+The user's question is unclear or too vague. Help them clarify what specific policy or procedure they're asking about. Be helpful and guide them to ask a more specific question.
+"""
+            
+            messages = [HumanMessage(content=clarification_prompt)]
+            async for chunk in self.llm.astream(messages):
+                if hasattr(chunk, 'content') and chunk.content:
+                    yield chunk.content
             return
         
-        # Otherwise stream the final response
+        # Otherwise stream the final response from OpenAI
         user_info = result["user_info"]
         context = result.get("context", "")
         
