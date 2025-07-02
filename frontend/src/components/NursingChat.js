@@ -98,7 +98,7 @@ function NursingChat() {
   };
 
   return (
-    <div className="flex flex-col h-96 max-w-4xl mx-auto border border-gray-300 rounded-lg bg-white shadow-lg">
+    <div className="flex flex-col h-[700px] max-w-5xl mx-auto border border-gray-300 rounded-lg bg-white shadow-lg">
       <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-blue-50">
         <h2 className="text-xl font-semibold text-gray-800">
           Digital Yapper - Nursing Assistant

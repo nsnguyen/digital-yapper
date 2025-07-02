@@ -3,21 +3,20 @@ import NursingChat from '../components/NursingChat';
 
 function ChatPage() {
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gray-50 py-6">
       <div className="max-w-6xl mx-auto px-4">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+        <div className="text-center mb-6">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
             Nursing Assistant
           </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Ask questions about nursing policies and procedures. 
-            Just tell me your unit and role to get started.
+          <p className="text-lg text-gray-600">
+            Ask questions about nursing policies and procedures
           </p>
         </div>
         
         <NursingChat />
         
-        <div className="mt-8 text-center">
+        <div className="mt-6 text-center">
           <p className="text-sm text-gray-500">
             Demo system - Always verify with official hospital policies
           </p>

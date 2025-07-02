@@ -62,11 +62,15 @@ def extract_user_info(message: str, current_info: UserInfo) -> UserInfo:
                 new_info.role = 'NURSE'
             else:
                 new_info.role = role
+            print(f"DEBUG: Extracted role: {new_info.role}")
             break
     
     # Extract unit - check if any unit keywords are mentioned
     found_unit = HospitalUnits.find_unit(message)
     if found_unit:
         new_info.unit = found_unit
+        print(f"DEBUG: Mapped unit '{message}' -> '{found_unit}'")
+    else:
+        print(f"DEBUG: No unit found in message: '{message}'")
     
     return new_info
